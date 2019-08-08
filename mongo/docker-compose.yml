@@ -1,0 +1,34 @@
+# Use root/example as user/password credentials
+version: '3.1'
+
+services:
+  mongo:
+    image: mongo:4.1.13-bionic
+    container_name: mongo
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - /data/mongo/db:/data/db
+      - /data/mongo/log:/var/log/mongodb
+      - ./mongod.conf:/etc/mongod.conf
+      - ./setup:/docker-entrypoint-initdb.d
+    ports:
+      - 27017:27017
+    command: mongod -f /etc/mongod.conf
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root-password
+    privileged: true
+    restart: always
+
+  mongo-express:
+    image: mongo-express:0.49
+    container_name: mongo-express
+    restart: always
+    ports:
+      - 37017:8081
+    environment:
+      ME_CONFIG_BASICAUTH_USERNAME : admin
+      ME_CONFIG_BASICAUTH_PASSWORD : admin-password
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: root-password
+
