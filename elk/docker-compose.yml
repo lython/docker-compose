@@ -1,0 +1,48 @@
+version: "3.1"
+services: 
+   elasticsearch: 
+     image: elasticsearch:7.2.0
+     container_name: elasticsearch
+     privileged: true
+     restart: always
+     environment: 
+       - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
+       - bootstrap.memory_lock=true
+     ulimits:
+       memlock:
+         soft: -1
+         hard: -1
+     volumes:
+       - ./config/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+       - /data/elasticsearch/data:/usr/share/elasticsearch/data
+       - /data/elasticsearch/logs:/usr/share/elasticsearch/logs
+     logging:
+       driver: "json-file"
+       options:
+         max-size: "10g"
+     ports:
+       - 9200:9200
+       - 9300:9300
+     networks:
+       - elk
+   kibana:
+     image: kibana:7.2.0
+     container_name: kibana
+     privileged: true
+     restart: always
+     ports: 
+       - 5601:5601
+     environment:
+       - SERVER_NAME=kibana
+     volumes:
+       - /etc/localtime:/etc/localtime
+     logging:
+       driver: "json-file"
+       options:
+         max-size: "2g"
+     depends_on:
+       - elasticsearch
+     networks:
+       - elk
+networks:
+  elk:
