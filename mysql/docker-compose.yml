@@ -1,0 +1,19 @@
+version: '3.1'
+
+services:
+  db:
+    image: mariadb:10.4-bionic
+    container_name: mysql
+    ports:
+      - 3306:3306
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - ./conf.d/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./setup:/docker-entrypoint-initdb.d
+      - /data/mysql/data:/var/lib/mysql
+      - /data/mysql/logs:/var/log/mysql
+    privileged: true
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+
