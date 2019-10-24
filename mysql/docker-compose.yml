@@ -1,11 +1,13 @@
 version: '3.1'
 
 services:
-  db:
+  mysql:
     image: mariadb:10.4-bionic
     container_name: mysql
     ports:
       - 3306:3306
+    networks:
+      - bridge
     volumes:
       - /etc/localtime:/etc/localtime
       - ./conf.d/my.cnf:/etc/mysql/conf.d/my.cnf
@@ -17,3 +19,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root_password
 
+networks:
+  bridge:
+    external:
+      name: bridge

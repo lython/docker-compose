@@ -24,7 +24,7 @@ services:
        - 9200:9200
        - 9300:9300
      networks:
-       - elk
+       - bridge
    kibana:
      image: kibana:7.2.0
      container_name: kibana
@@ -43,6 +43,8 @@ services:
      depends_on:
        - elasticsearch
      networks:
-       - elk
+       - bridge
 networks:
-  elk:
+  bridge:
+    external:
+      name: bridge

@@ -4,6 +4,8 @@ services:
     image: redis:5.0.5-alpine
     container_name: redis
     restart: always
+    networks:
+      - bridge
     logging:
       driver: "json-file"
       options:
@@ -20,3 +22,8 @@ services:
       - |
         echo 1024 > /proc/sys/net/core/somaxconn
         redis-server --appendonly yes
+
+networks:
+  bridge:
+    external:
+      name: bridge
