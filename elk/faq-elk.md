@@ -36,14 +36,18 @@ f47239827adc        none                      null                local
 创建一个新的网络，然后在docker-compose.yml指定向这个网络。
 
 ```
-docker network create bridge
+docker network create cloud
 
-# 修改 docker-compose.yml中network配置
+# 修改 docker-compose.yml中network配置为
 
 networks:
-  bridge:
+  cloud:
     external:
-      name: bridge
+      name: cloud
+或
+networks:
+  cloud:
+    external: true
 ```
 
 > 问题3: elasticsearch exited with code 78
